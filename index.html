@@ -2276,6 +2276,234 @@
     width: 100%;
   }
   .session-leave-btn:hover { border-color: #e84040; color: #e84040; }
+
+  /* ══════════════════════════════════════
+     GESTIONNAIRE DE COMBAT
+  ══════════════════════════════════════ */
+  .combat-panel {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border); border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .combat-header {
+    padding: 10px 14px;
+    background: linear-gradient(90deg, rgba(232,64,64,0.08), transparent);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+
+  .combat-title {
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: #e84040;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .combat-round-badge {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.65rem; color: var(--gold);
+    background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.25);
+    padding: 2px 10px; border-radius: 2px; letter-spacing: 0.1em;
+  }
+
+  .combat-status-badge {
+    font-size: 0.58rem; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 3px 8px; border-radius: 2px;
+  }
+  .combat-status-off  { background: rgba(255,255,255,0.04); color: var(--text-dim); border: 1px solid var(--border); }
+  .combat-status-on   { background: rgba(232,64,64,0.15); color: #e84040; border: 1px solid rgba(232,64,64,0.3);
+                        animation: pulse 1.5s infinite; }
+
+  .combat-controls {
+    display: flex; gap: 5px; flex-wrap: wrap;
+  }
+
+  .combat-ctrl-btn {
+    background: none; border: 1px solid var(--border);
+    color: var(--text-dim); font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+    padding: 5px 10px; cursor: pointer; border-radius: 2px;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .combat-ctrl-btn:hover { border-color: var(--gold); color: var(--gold-light); }
+  .combat-ctrl-btn.red:hover { border-color: #e84040; color: #e84040; }
+  .combat-ctrl-btn.green { border-color: rgba(64,184,128,0.4); color: #40b880; }
+  .combat-ctrl-btn.green:hover { border-color: #40b880; background: rgba(64,184,128,0.08); }
+
+  /* Combattants */
+  .combat-fighters { display: flex; flex-direction: column; }
+
+  .combat-fighter {
+    display: grid;
+    grid-template-columns: 28px 1fr 160px 100px auto;
+    align-items: center; gap: 8px;
+    padding: 9px 14px;
+    border-bottom: 1px solid rgba(201,168,76,0.06);
+    transition: background 0.15s;
+  }
+
+  .combat-fighter:last-child { border-bottom: none; }
+  .combat-fighter.active-turn {
+    background: rgba(201,168,76,0.06);
+    border-left: 3px solid var(--gold);
+    padding-left: 11px;
+  }
+  .combat-fighter.dead { opacity: 0.35; }
+
+  .combat-fighter-init {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.85rem; color: var(--gold);
+    text-align: center; font-weight: 700;
+  }
+
+  .combat-fighter-name {
+    font-size: 0.88rem; font-weight: 700;
+    color: rgba(232,224,208,0.9); letter-spacing: 0.03em;
+  }
+
+  .combat-fighter-type {
+    font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-top: 1px;
+  }
+
+  /* Barre PV */
+  .combat-pv-wrap { display: flex; flex-direction: column; gap: 3px; }
+
+  .combat-pv-row {
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .combat-pv-nums {
+    font-size: 0.78rem; font-weight: 700; white-space: nowrap; min-width: 52px;
+  }
+
+  .combat-pv-bar-bg {
+    flex: 1; height: 5px; background: rgba(255,255,255,0.07);
+    border-radius: 3px; overflow: hidden;
+  }
+
+  .combat-pv-bar-fill {
+    height: 100%; border-radius: 3px;
+    transition: width 0.4s ease, background 0.4s;
+  }
+
+  /* Modificateurs PV (MJ seulement) */
+  .combat-pv-controls {
+    display: flex; gap: 3px; align-items: center;
+  }
+
+  .combat-pv-btn {
+    width: 22px; height: 22px; border-radius: 2px;
+    border: 1px solid var(--border); background: none;
+    color: var(--text-dim); font-size: 0.85rem; font-weight: 700;
+    cursor: pointer; transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center; line-height: 1;
+  }
+  .combat-pv-btn.dmg:hover { border-color: #e84040; color: #e84040; background: rgba(232,64,64,0.1); }
+  .combat-pv-btn.heal:hover { border-color: #40e880; color: #40e880; background: rgba(64,232,128,0.1); }
+
+  .combat-pv-inp {
+    width: 34px; background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border); border-radius: 2px;
+    color: var(--text); font-family: 'Rajdhani', sans-serif;
+    font-size: 0.78rem; font-weight: 700; padding: 2px 4px;
+    text-align: center; outline: none;
+  }
+
+  /* Statuts */
+  .combat-statuts {
+    display: flex; gap: 3px; flex-wrap: wrap; align-items: center;
+  }
+
+  .combat-statut-tag {
+    font-size: 0.55rem; font-weight: 700; letter-spacing: 0.06em;
+    padding: 2px 5px; border-radius: 2px; text-transform: uppercase;
+    cursor: pointer; transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+  .combat-statut-tag:hover { opacity: 0.7; }
+
+  /* Statuts couleurs */
+  .st-poison    { background: rgba(100,200,64,0.2);  color: #64c840; border: 1px solid rgba(100,200,64,0.3); }
+  .st-brulure   { background: rgba(232,120,64,0.2);  color: #e87840; border: 1px solid rgba(232,120,64,0.3); }
+  .st-gel       { background: rgba(100,180,232,0.2); color: #64b4e8; border: 1px solid rgba(100,180,232,0.3); }
+  .st-etourdi   { background: rgba(232,200,64,0.2);  color: #e8c840; border: 1px solid rgba(232,200,64,0.3); }
+  .st-charme    { background: rgba(232,64,180,0.2);  color: #e840b4; border: 1px solid rgba(232,64,180,0.3); }
+  .st-terreur   { background: rgba(100,64,100,0.3);  color: #c080c0; border: 1px solid rgba(160,80,160,0.3); }
+  .st-ralenti   { background: rgba(64,100,200,0.2);  color: #6480e8; border: 1px solid rgba(64,100,200,0.3); }
+  .st-mort      { background: rgba(80,80,80,0.3);    color: #888;    border: 1px solid #555; }
+
+  /* Tour actif indicator */
+  .combat-turn-arrow {
+    font-size: 0.9rem; color: var(--gold);
+    animation: arrowBounce 0.8s ease-in-out infinite alternate;
+    flex-shrink: 0;
+  }
+  @keyframes arrowBounce { from { transform: translateX(0); } to { transform: translateX(3px); } }
+
+  /* Form ajout combattant */
+  .combat-add-form {
+    padding: 10px 14px;
+    border-top: 1px solid var(--border);
+    background: rgba(0,0,0,0.15);
+    display: none;
+  }
+  .combat-add-form.open { display: block; }
+
+  .combat-add-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto;
+    gap: 6px; align-items: end;
+  }
+
+  .combat-add-input {
+    background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    border-radius: 2px; color: var(--text);
+    font-family: 'Rajdhani', sans-serif; font-size: 0.85rem;
+    padding: 6px 8px; outline: none; width: 100%;
+    transition: border-color 0.15s;
+  }
+  .combat-add-input:focus { border-color: var(--gold); }
+  .combat-add-input::placeholder { color: rgba(232,224,208,0.2); font-style: italic; }
+
+  .combat-add-type {
+    display: flex; gap: 4px;
+  }
+
+  .combat-type-opt {
+    flex: 1; padding: 6px 4px; border-radius: 2px; text-align: center;
+    border: 1px solid var(--border); cursor: pointer;
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--text-dim); transition: all 0.15s;
+  }
+  .combat-type-opt.sel-joueur { border-color: #40b880; color: #40b880; background: rgba(64,184,128,0.1); }
+  .combat-type-opt.sel-ennemi { border-color: #e84040; color: #e84040; background: rgba(232,64,64,0.1); }
+  .combat-type-opt.sel-allie  { border-color: #4080e8; color: #6ca0ff; background: rgba(64,128,232,0.1); }
+
+  .combat-add-confirm {
+    background: rgba(201,168,76,0.1); border: 1px solid var(--gold);
+    color: var(--gold-light); font-family: 'Rajdhani', sans-serif;
+    font-size: 0.78rem; font-weight: 700; padding: 6px 12px;
+    cursor: pointer; border-radius: 2px; white-space: nowrap;
+    transition: background 0.15s;
+  }
+  .combat-add-confirm:hover { background: rgba(201,168,76,0.2); }
+
+  /* Statuts picker popup */
+  .statut-picker {
+    position: fixed; z-index: 900;
+    background: rgba(10,10,15,0.98); border: 1px solid var(--gold);
+    border-radius: 4px; padding: 10px 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    display: none; flex-wrap: wrap; gap: 5px; max-width: 220px;
+    backdrop-filter: blur(8px);
+  }
+  .statut-picker.open { display: flex; }
+  .statut-picker-title {
+    width: 100%; font-size: 0.58rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 4px;
+  }
 </style>
 </head>
 <body>
@@ -2441,6 +2669,42 @@
           <div class="session-chat-input-row">
             <input class="session-chat-input" id="sessionChatInput" type="text" placeholder="Écrivez un message..." onkeydown="if(event.key==='Enter')sessionSendMsg()">
             <button class="session-send-btn" onclick="sessionSendMsg()">Envoyer →</button>
+          </div>
+        </div>
+
+        <!-- COMBAT -->
+        <div class="combat-panel" id="combatPanel">
+          <div class="combat-header">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+              <div class="combat-title">⚔ Combat</div>
+              <div class="combat-round-badge" id="combatRoundBadge">Round 1</div>
+              <div class="combat-status-badge combat-status-off" id="combatStatusBadge">Hors Combat</div>
+            </div>
+            <div class="combat-controls" id="combatControls">
+              <!-- Boutons MJ ajoutés dynamiquement -->
+            </div>
+          </div>
+
+          <div class="combat-fighters" id="combatFighters">
+            <div style="text-align:center;padding:20px;font-size:0.78rem;color:var(--text-dim);font-style:italic;">
+              Aucun combattant — Le MJ peut lancer un combat
+            </div>
+          </div>
+
+          <!-- Form ajout combattant (MJ) -->
+          <div class="combat-add-form" id="combatAddForm">
+            <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">+ Ajouter un Combattant</div>
+            <div class="combat-add-grid">
+              <input class="combat-add-input" id="caName" type="text" placeholder="Nom...">
+              <input class="combat-add-input" id="caInit" type="number" placeholder="Init." min="1" max="30" value="10">
+              <input class="combat-add-input" id="caPvMax" type="number" placeholder="PV max" min="1" value="20">
+              <div class="combat-add-type">
+                <div class="combat-type-opt sel-joueur" id="caTypeJoueur" onclick="caSelectType('joueur')">J</div>
+                <div class="combat-type-opt" id="caTypeEnnemi" onclick="caSelectType('ennemi')">E</div>
+                <div class="combat-type-opt" id="caTypeAllie" onclick="caSelectType('allie')">A</div>
+              </div>
+              <button class="combat-add-confirm" onclick="combatAddFighter()">Ajouter</button>
+            </div>
           </div>
         </div>
 
@@ -3866,6 +4130,19 @@
 
 <!-- ALERTE MJ notification -->
 <div class="session-alert-notif" id="sessionAlertNotif"></div>
+
+<!-- STATUT PICKER -->
+<div class="statut-picker" id="statutPicker">
+  <div class="statut-picker-title">Ajouter un statut</div>
+  <span class="combat-statut-tag st-poison"  onclick="statutPickerApply('poison')">☠ Poison</span>
+  <span class="combat-statut-tag st-brulure" onclick="statutPickerApply('brulure')">🔥 Brûlure</span>
+  <span class="combat-statut-tag st-gel"     onclick="statutPickerApply('gel')">❄ Gel</span>
+  <span class="combat-statut-tag st-etourdi" onclick="statutPickerApply('etourdi')">💫 Étourdi</span>
+  <span class="combat-statut-tag st-charme"  onclick="statutPickerApply('charme')">💕 Charmé</span>
+  <span class="combat-statut-tag st-terreur" onclick="statutPickerApply('terreur')">👁 Terreur</span>
+  <span class="combat-statut-tag st-ralenti" onclick="statutPickerApply('ralenti')">🌀 Ralenti</span>
+  <span class="combat-statut-tag st-mort"    onclick="statutPickerApply('mort')">💀 KO</span>
+</div>
 
 <!-- MODAL SALLE -->
 <div class="session-modal-bg hidden" id="sessionModalBg">
@@ -5506,6 +5783,7 @@
     sessionListenChat(code);
     sessionListenMembers(code);
     if (role !== 'mj') sessionListenAlerts(code);
+    combatListenSession(code);
     showToast('🎮 Session ' + code + ' rejointe !');
   }
 
@@ -5686,6 +5964,290 @@
       .then(() => showToast('📋 Code copié : ' + _sessionId));
   }
 
+  /* ══════════════════════════════════════
+     GESTIONNAIRE DE COMBAT
+  ══════════════════════════════════════ */
+  let _unsubCombat    = null;
+  let _combatActive   = false;
+  let _currentTurnIdx = 0;
+  let _currentRound   = 1;
+  let _fighters       = [];
+  let _caType         = 'joueur';
+  let _statutTarget   = null;
+
+  const STATUT_LABELS = {
+    poison:'☠ Poison', brulure:'🔥 Brûlure', gel:'❄ Gel',
+    etourdi:'💫 Étourdi', charme:'💕 Charmé', terreur:'👁 Terreur',
+    ralenti:'🌀 Ralenti', mort:'💀 KO'
+  };
+  const STATUT_CSS = {
+    poison:'st-poison', brulure:'st-brulure', gel:'st-gel',
+    etourdi:'st-etourdi', charme:'st-charme', terreur:'st-terreur',
+    ralenti:'st-ralenti', mort:'st-mort'
+  };
+  const TYPE_COLORS = { joueur:'#40b880', ennemi:'#e84040', allie:'#6ca0ff' };
+
+  /* ── Brancher le listener combat quand on rejoint ── */
+  function combatListenSession(code) {
+    if (_unsubCombat) _unsubCombat();
+    const { doc, onSnapshot } = window._fbFns;
+    _unsubCombat = onSnapshot(doc(window._fbDb, 'sessions', code, 'data', 'combat'), snap => {
+      if (!snap.exists()) { renderCombat(null); return; }
+      renderCombat(snap.data());
+    });
+  }
+
+  /* ── Render combat state ── */
+  function renderCombat(data) {
+    const isMJ = _sessionRole === 'mj';
+
+    if (!data || !data.active) {
+      _combatActive = false;
+      document.getElementById('combatStatusBadge').className = 'combat-status-badge combat-status-off';
+      document.getElementById('combatStatusBadge').textContent = 'Hors Combat';
+      document.getElementById('combatRoundBadge').textContent  = 'Round 1';
+      document.getElementById('combatFighters').innerHTML =
+        '<div style="text-align:center;padding:20px;font-size:0.78rem;color:var(--text-dim);font-style:italic;">' +
+        (isMJ ? 'Ajoutez des combattants et lancez le combat.' : 'Aucun combat en cours.') + '</div>';
+      document.getElementById('combatAddForm').className = isMJ ? 'combat-add-form open' : 'combat-add-form';
+      renderCombatControls(isMJ, false);
+      return;
+    }
+
+    _combatActive   = data.active;
+    _currentTurnIdx = data.turnIdx  || 0;
+    _currentRound   = data.round    || 1;
+    _fighters       = data.fighters || [];
+
+    document.getElementById('combatStatusBadge').className = 'combat-status-badge combat-status-on';
+    document.getElementById('combatStatusBadge').textContent = '⚔ Combat en cours';
+    document.getElementById('combatRoundBadge').textContent  = 'Round ' + _currentRound;
+    document.getElementById('combatAddForm').className = isMJ ? 'combat-add-form open' : 'combat-add-form';
+
+    renderCombatFighters(isMJ);
+    renderCombatControls(isMJ, true);
+  }
+
+  function renderCombatFighters(isMJ) {
+    const container = document.getElementById('combatFighters');
+    if (!_fighters.length) {
+      container.innerHTML = '<div style="text-align:center;padding:16px;font-size:0.78rem;color:var(--text-dim);font-style:italic;">Aucun combattant</div>';
+      return;
+    }
+
+    container.innerHTML = _fighters.map((f, idx) => {
+      const isActive = _combatActive && idx === _currentTurnIdx;
+      const pct = Math.max(0, Math.round((f.pv / f.pvMax) * 100));
+      const pvColor = pct > 60 ? '#40e880' : pct > 30 ? '#e8c840' : '#e84040';
+      const typeColor = TYPE_COLORS[f.type] || '#888';
+      const isDead = f.statuts?.includes('mort');
+
+      const statutsHtml = (f.statuts||[]).map(s =>
+        `<span class="combat-statut-tag ${STATUT_CSS[s]||''}" title="Cliquer pour retirer"
+          ${isMJ ? `onclick="combatRemoveStatut(${idx},'${s}')"` : ''}>${STATUT_LABELS[s]||s}</span>`
+      ).join('');
+
+      const pvControls = isMJ ? `
+        <div class="combat-pv-controls">
+          <button class="combat-pv-btn dmg"  onclick="combatApplyDmg(${idx}, -1)" title="Dégâts">−</button>
+          <input  class="combat-pv-inp" id="pvInp_${idx}" type="number" value="1" min="1" max="999">
+          <button class="combat-pv-btn heal" onclick="combatApplyDmg(${idx}, 1)"  title="Soin">+</button>
+          <button class="combat-pv-btn" style="font-size:0.65rem;width:28px;"
+            onclick="combatOpenStatut(${idx}, event)" title="Statuts">⚡</button>
+          <button class="combat-pv-btn red" style="color:rgba(232,64,64,0.5);border-color:rgba(232,64,64,0.2);width:22px;"
+            onclick="combatRemoveFighter(${idx})" title="Retirer">✕</button>
+        </div>` : '';
+
+      return `<div class="combat-fighter ${isActive?'active-turn':''} ${isDead?'dead':''}">
+        <div class="combat-fighter-init">${f.init}</div>
+        <div>
+          <div class="combat-fighter-name" style="${isActive?'color:var(--gold-light)':''}">${isActive?'▶ ':''}${f.name}</div>
+          <div class="combat-fighter-type" style="color:${typeColor}">${f.type}</div>
+          <div class="combat-statuts" style="margin-top:3px;">${statutsHtml}
+            ${isMJ&&!isDead?`<span class="combat-statut-tag" style="border:1px dashed var(--border);color:var(--text-dim);cursor:pointer;" onclick="combatOpenStatut(${idx},event)">+</span>`:''}
+          </div>
+        </div>
+        <div class="combat-pv-wrap">
+          <div class="combat-pv-row">
+            <span class="combat-pv-nums" style="color:${pvColor}">${f.pv}/${f.pvMax}</span>
+          </div>
+          <div class="combat-pv-bar-bg">
+            <div class="combat-pv-bar-fill" style="width:${pct}%;background:${pvColor};"></div>
+          </div>
+        </div>
+        ${pvControls}
+        <div>${isActive?'<div class="combat-turn-arrow">→</div>':''}</div>
+      </div>`;
+    }).join('');
+  }
+
+  function renderCombatControls(isMJ, isActive) {
+    const container = document.getElementById('combatControls');
+    if (!isMJ) { container.innerHTML = ''; return; }
+    if (!isActive) {
+      container.innerHTML = `
+        <button class="combat-ctrl-btn green" onclick="combatStart()">▶ Lancer le Combat</button>`;
+    } else {
+      container.innerHTML = `
+        <button class="combat-ctrl-btn" onclick="combatNextTurn()">⏭ Tour Suivant</button>
+        <button class="combat-ctrl-btn red" onclick="combatEnd()">⏹ Fin Combat</button>`;
+    }
+  }
+
+  /* ── Type combattant ── */
+  function caSelectType(type) {
+    _caType = type;
+    ['joueur','ennemi','allie'].forEach(t => {
+      const el = document.getElementById('caType' + t.charAt(0).toUpperCase() + t.slice(1));
+      if (el) el.className = 'combat-type-opt' + (t === type ? ' sel-'+t : '');
+    });
+  }
+
+  /* ── Ajouter un combattant ── */
+  async function combatAddFighter() {
+    if (!_sessionId || _sessionRole !== 'mj') return;
+    const name  = document.getElementById('caName').value.trim();
+    const init  = parseInt(document.getElementById('caInit').value) || 10;
+    const pvMax = parseInt(document.getElementById('caPvMax').value) || 20;
+    if (!name) { showToast('⚠ Entrez un nom'); return; }
+
+    const newFighter = { name, init, pvMax, pv: pvMax, type: _caType, statuts: [] };
+    const newList = [..._fighters, newFighter].sort((a,b) => b.init - a.init);
+
+    await combatSave({ fighters: newList });
+    document.getElementById('caName').value = '';
+    showToast('⚔ ' + name + ' ajouté !');
+  }
+
+  /* ── Lancer le combat ── */
+  async function combatStart() {
+    if (!_sessionId || !_fighters.length) {
+      showToast('⚠ Ajoutez d\'abord des combattants');
+      return;
+    }
+    await combatSave({ active: true, turnIdx: 0, round: 1, fighters: _fighters });
+    const { collection, addDoc, serverTimestamp } = window._fbFns;
+    await addDoc(collection(window._fbDb,'sessions',_sessionId,'chat'), {
+      type: 'system',
+      text: '⚔ Le combat commence ! Round 1 — ' + (_fighters[0]?.name || '?') + ' ouvre les hostilités.',
+      ts: serverTimestamp()
+    });
+  }
+
+  /* ── Tour suivant ── */
+  async function combatNextTurn() {
+    if (!_sessionId) return;
+    let nextIdx = (_currentTurnIdx + 1) % _fighters.length;
+    let round   = _currentRound;
+    if (nextIdx === 0) round++;
+
+    await combatSave({ turnIdx: nextIdx, round });
+
+    const { collection, addDoc, serverTimestamp } = window._fbFns;
+    const nextFighter = _fighters[nextIdx];
+    const msg = nextIdx === 0
+      ? `⚔ Round ${round} — C'est le tour de ${nextFighter?.name || '?'}`
+      : `▶ C'est le tour de ${nextFighter?.name || '?'}`;
+    await addDoc(collection(window._fbDb,'sessions',_sessionId,'chat'), {
+      type: 'system', text: msg, ts: serverTimestamp()
+    });
+  }
+
+  /* ── Fin combat ── */
+  async function combatEnd() {
+    if (!_sessionId) return;
+    await combatSave({ active: false, fighters: [], turnIdx: 0, round: 1 });
+    const { collection, addDoc, serverTimestamp } = window._fbFns;
+    await addDoc(collection(window._fbDb,'sessions',_sessionId,'chat'), {
+      type: 'system', text: '🏁 Le combat est terminé.', ts: serverTimestamp()
+    });
+  }
+
+  /* ── Appliquer dégâts / soins ── */
+  async function combatApplyDmg(idx, sign) {
+    if (!_sessionId || _sessionRole !== 'mj') return;
+    const inp = document.getElementById('pvInp_' + idx);
+    const val = parseInt(inp?.value) || 1;
+    const updated = [..._fighters];
+    const f = { ...updated[idx] };
+    f.pv = Math.min(f.pvMax, Math.max(0, f.pv + sign * val));
+    if (f.pv === 0 && !f.statuts.includes('mort')) f.statuts = [...f.statuts, 'mort'];
+    if (f.pv > 0) f.statuts = f.statuts.filter(s => s !== 'mort');
+    updated[idx] = f;
+
+    await combatSave({ fighters: updated });
+
+    const { collection, addDoc, serverTimestamp } = window._fbFns;
+    const msg = sign < 0
+      ? `💥 ${f.name} subit ${val} dégâts (${f.pv}/${f.pvMax} PV)${f.pv===0?' — KO !':''}`
+      : `💚 ${f.name} récupère ${val} PV (${f.pv}/${f.pvMax} PV)`;
+    await addDoc(collection(window._fbDb,'sessions',_sessionId,'chat'), {
+      type:'system', text: msg, ts: serverTimestamp()
+    });
+  }
+
+  /* ── Retirer un combattant ── */
+  async function combatRemoveFighter(idx) {
+    const updated = _fighters.filter((_, i) => i !== idx);
+    const newTurn = Math.min(_currentTurnIdx, Math.max(0, updated.length - 1));
+    await combatSave({ fighters: updated, turnIdx: newTurn });
+  }
+
+  /* ── Statut picker ── */
+  function combatOpenStatut(idx, event) {
+    _statutTarget = idx;
+    const picker = document.getElementById('statutPicker');
+    const x = event.clientX, y = event.clientY;
+    const pw = 220, ph = 130;
+    picker.style.left = (x + pw > window.innerWidth  ? x - pw : x) + 'px';
+    picker.style.top  = (y + ph > window.innerHeight ? y - ph : y) + 'px';
+    picker.classList.add('open');
+    event.stopPropagation();
+  }
+
+  async function statutPickerApply(statut) {
+    document.getElementById('statutPicker').classList.remove('open');
+    if (_statutTarget === null || !_sessionId) return;
+    const updated = [..._fighters];
+    const f = { ...updated[_statutTarget] };
+    if (!f.statuts.includes(statut)) f.statuts = [...f.statuts, statut];
+    updated[_statutTarget] = f;
+    await combatSave({ fighters: updated });
+    _statutTarget = null;
+  }
+
+  async function combatRemoveStatut(idx, statut) {
+    if (!_sessionId || _sessionRole !== 'mj') return;
+    const updated = [..._fighters];
+    const f = { ...updated[idx] };
+    f.statuts = f.statuts.filter(s => s !== statut);
+    updated[idx] = f;
+    await combatSave({ fighters: updated });
+  }
+
+  /* ── Sauvegarder état combat ── */
+  async function combatSave(patch) {
+    const { doc, setDoc } = window._fbFns;
+    const current = {
+      active: _combatActive, fighters: _fighters,
+      turnIdx: _currentTurnIdx, round: _currentRound
+    };
+    await setDoc(
+      doc(window._fbDb, 'sessions', _sessionId, 'data', 'combat'),
+      { ...current, ...patch },
+      { merge: true }
+    );
+  }
+
+  /* ── Fermer statut picker en cliquant ailleurs ── */
+  document.addEventListener('click', e => {
+    const picker = document.getElementById('statutPicker');
+    if (picker && !picker.contains(e.target)) {
+      picker.classList.remove('open');
+      _statutTarget = null;
+    }
+  });
+
   async function sessionLeave() {
     if (!_sessionId || !window._currentUser) return;
     try {
@@ -5701,7 +6263,8 @@
     if (_unsubChat)    _unsubChat();
     if (_unsubMembers) _unsubMembers();
     if (_unsubAlerts)  _unsubAlerts();
-    _unsubChat = _unsubMembers = _unsubAlerts = null;
+    if (_unsubCombat)  _unsubCombat();
+    _unsubChat = _unsubMembers = _unsubAlerts = _unsubCombat = null;
     _sessionId = _sessionRole = null;
 
     document.getElementById('sessionRoom').classList.remove('active');
