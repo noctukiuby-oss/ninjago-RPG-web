@@ -4211,23 +4211,27 @@
       <div style="font-size:0.7rem;color:var(--text-dim);margin-top:4px;letter-spacing:0.08em;">Cliquez sur un lieu pour en savoir plus · Molette ou pincer pour zoomer</div>
     </div>
     <div class="map-legend-row">
-      <div class="map-legend-item"><div class="map-legend-dot" style="background:#c9a84c;"></div> Cité / Royaume</div>
-      <div class="map-legend-item"><div class="map-legend-dot" style="background:#4080e8;"></div> Temple / Sanctuaire</div>
-      <div class="map-legend-item"><div class="map-legend-dot" style="background:#e84040;"></div> Lieu Dangereux</div>
-      <div class="map-legend-item"><div class="map-legend-dot" style="background:#40c8e8;"></div> Technologie / Nindroïde</div>
-      <div class="map-legend-item"><div class="map-legend-dot" style="background:#9040e8;"></div> Mystique / Ombre</div>
-      <div class="map-legend-item"><div class="map-legend-dot" style="background:#40b880;"></div> Nature / Jungle</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#c9a84c;"></div> Ninjago</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#4080e8;"></div> Impérium</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#e84040;"></div> Terre de lave</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#40c8e8;"></div> Royaume des Ames</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#9040e8;"></div> Royaume des ténèbres</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#40b880;"></div> Royaume de la folie</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#40b880;"></div> Royaume disparue</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:#40b880;"></div> INCONNUE</div>
     </div>
   </div>
 
   <div class="map-filter-row">
     <button class="map-filter-btn active" data-filter="all" onclick="mapFilter('all',this)">✦ Tout afficher</button>
-    <button class="map-filter-btn" data-filter="cite" onclick="mapFilter('cite',this)"><div class="map-filter-dot" style="background:#c9a84c;"></div> Cités</button>
-    <button class="map-filter-btn" data-filter="temple" onclick="mapFilter('temple',this)"><div class="map-filter-dot" style="background:#4080e8;"></div> Temples</button>
-    <button class="map-filter-btn" data-filter="danger" onclick="mapFilter('danger',this)"><div class="map-filter-dot" style="background:#e84040;"></div> Zones Dangereuses</button>
-    <button class="map-filter-btn" data-filter="tech" onclick="mapFilter('tech',this)"><div class="map-filter-dot" style="background:#40c8e8;"></div> Technologie</button>
-    <button class="map-filter-btn" data-filter="mystique" onclick="mapFilter('mystique',this)"><div class="map-filter-dot" style="background:#9040e8;"></div> Mystique</button>
-    <button class="map-filter-btn" data-filter="nature" onclick="mapFilter('nature',this)"><div class="map-filter-dot" style="background:#40b880;"></div> Nature</button>
+    <button class="map-filter-btn" data-filter="Ninjago" onclick="mapFilter('cite',this)"><div class="map-filter-dot" style="background:#c9a84c;"></div> Ninjago</button>
+    <button class="map-filter-btn" data-filter="Impérium" onclick="mapFilter('temple',this)"><div class="map-filter-dot" style="background:#4080e8;"></div> Impérium</button>
+    <button class="map-filter-btn" data-filter="Lave" onclick="mapFilter('danger',this)"><div class="map-filter-dot" style="background:#e84040;"></div> Terre de lave</button>
+    <button class="map-filter-btn" data-filter="Ame" onclick="mapFilter('tech',this)"><div class="map-filter-dot" style="background:#40c8e8;"></div> Royaume des Ames</button>
+    <button class="map-filter-btn" data-filter="ténèbres" onclick="mapFilter('mystique',this)"><div class="map-filter-dot" style="background:#9040e8;"></div> Royaume des ténèbres</button>
+    <button class="map-filter-btn" data-filter="folie" onclick="mapFilter('nature',this)"><div class="map-filter-dot" style="background:#40b880;"></div> Royaume de la folie</button>
+    <button class="map-filter-btn" data-filter="disparue" onclick="mapFilter('nature',this)"><div class="map-filter-dot" style="background:#40b880;"></div> Royaume disparue</button>
+    <button class="map-filter-btn" data-filter="Autres" onclick="mapFilter('nature',this)"><div class="map-filter-dot" style="background:#40b880;"></div> Autres</button>
   </div>
 
   <div class="map-container" id="mapContainer"
@@ -4519,7 +4523,7 @@
       name: 'Ninjago City',
       type: 'cite',
       color: '#222222',
-      x: 50, y: 27,
+      x: 50, y: 30,
       typeLabel: '🏙 Cité Principale',
       desc: 'La grande métropole au cœur du Royaume de Ninjago. Centre du pouvoir des Ninja et de la civilisation connue. Elle a survécu à d\'innombrables menaces grâce à ses défenseurs légendaires.',
       tags: ['Royaume de Ninjago', 'Capital', 'Commerce', 'Technologie']
@@ -4529,7 +4533,7 @@
       name: 'Impérium',
       type: 'danger',
       color: '#e84040',
-      x: 51, y: 13,
+      x: 60, y: 20,
       typeLabel: '🏯 Cité Impériale',
       desc: 'Capitale du puissant Royaume d\'Impérium, cité fortifiée régie par une autorité militaire stricte. Ses murailles massives et ses armées disciplinées en font une place imprenable.',
       tags: ['Royaume d\'Impérium', 'Militaire', 'Forteresse', 'Pouvoir']
@@ -4539,7 +4543,7 @@
       name: 'Monastère du Spinjitzu',
       type: 'temple',
       color: '#b08060',
-      x: 20, y: 52,
+      x: 15, y: 67,
       typeLabel: '🏯 Temple Sacré',
       desc: 'Sanctuaire ancestral du Royaume Disparu, berceau de l\'art du Spinjitzu. Ses murs renferment les secrets des anciens Maîtres. Un lieu de paix et de sagesse hors du temps.',
       tags: ['Royaume Disparu', 'Spinjitzu', 'Maîtres', 'Sérénité']
@@ -4549,7 +4553,7 @@
       name: 'L\'Administration',
       type: 'mystique',
       color: '#e84080',
-      x: 8, y: 18,
+      x: 10, y: 18,
       typeLabel: '🌀 Centre Administratif',
       desc: 'Siège étrange et labyrinthique du Royaume de la Folie. Ses règles absurdes et son organisation chaotique en font un lieu incompréhensible pour les étrangers.',
       tags: ['Royaume de la Folie', 'Administration', 'Chaos', 'Mystère']
@@ -4559,7 +4563,7 @@
       name: 'La Jonction',
       type: 'nature',
       color: '#e87840',
-      x: 49, y: 38,
+      x: 40, y: 40,
       typeLabel: '⚖ Carrefour des Royaumes',
       desc: 'Point de convergence unique appartenant à tous les royaumes à la fois. Territoire neutre où se croisent marchands, diplomates et aventuriers de chaque coin du monde connu.',
       tags: ['Tous Royaumes', 'Neutre', 'Commerce', 'Diplomatie']
@@ -4569,7 +4573,7 @@
       name: 'Pic des Âmes',
       type: 'danger',
       color: '#4080e8',
-      x: 30, y: 49,
+      x: 35, y: 67,
       typeLabel: '💀 Lieu Maudit',
       desc: 'Sommet glacial du Royaume Maudit où errent les âmes perdues. Les cris du vent sont en réalité les lamentations des esprits condamnés à hanter ces crêtes pour l\'éternité.',
       tags: ['Royaume Maudit', 'Âmes', 'Malédiction', 'Interdit']
@@ -4579,7 +4583,7 @@
       name: 'Citadelle Maudite',
       type: 'mystique',
       color: '#40b880',
-      x: 62, y: 67,
+      x: 65, y: 80,
       typeLabel: '🌑 Forteresse des Ténèbres',
       desc: 'Bastion principal du Royaume des Ténèbres. Ses pierres noires absorbent la lumière et ses couloirs cachent des horreurs indicibles. Seuls les plus puissants maîtres des ténèbres y résident.',
       tags: ['Royaume des Ténèbres', 'Malédiction', 'Ombre', 'Puissance']
@@ -4589,7 +4593,7 @@
       name: 'Forge du Destin',
       type: 'tech',
       color: '#e8c840',
-      x: 79, y: 26,
+      x: 79, y: 35,
       typeLabel: '🔥 Forge Légendaire',
       desc: 'Forge mythique nichée au cœur des Terres de Lave, dans les Royaumes Volcaniques. Les armes forgées ici par la chaleur des volcans éternels sont imprégnées d\'une puissance élémentaire unique.',
       tags: ['Royaumes Volcaniques', 'Forge', 'Armes', 'Feu']
@@ -4599,7 +4603,7 @@
       name: 'Temples du Spin-Destructeur',
       type: 'temple',
       color: '#c9a84c',
-      x: 6, y: 76,
+      x: 6, y: 80,
       typeLabel: '🔺 Temples Anciens',
       desc: 'Pyramides mystérieuses d\'un royaume dont le nom est perdu dans les âges. Ces temples abritent les secrets du Spin-Destructeur, un art oublié dont la puissance dépasse l\'entendement.',
       tags: ['Royaume Inconnu', 'Spin-Destructeur', 'Ancien', 'Mystère']
