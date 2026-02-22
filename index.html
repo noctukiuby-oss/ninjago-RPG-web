@@ -2489,6 +2489,26 @@
   }
   .combat-add-confirm:hover { background: rgba(201,168,76,0.2); }
 
+  .ca-label {
+    font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 3px;
+  }
+  .ca-hint {
+    font-size: 0.55rem; color: var(--text-dim); margin-top: 2px;
+    font-style: italic; letter-spacing: 0.04em;
+  }
+
+  .ca-stat-chip {
+    font-size: 0.62rem; font-weight: 600; letter-spacing: 0.04em;
+    color: rgba(232,224,208,0.45);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 2px; padding: 1px 5px;
+    white-space: nowrap;
+  }
+
+  .combat-type-opt.sel-neutre { border-color: #aaa; color: #ccc; background: rgba(200,200,200,0.08); }
+
   /* Statuts picker popup */
   .statut-picker {
     position: fixed; z-index: 900;
@@ -2691,19 +2711,89 @@
             </div>
           </div>
 
+
           <!-- Form ajout combattant (MJ) -->
           <div class="combat-add-form" id="combatAddForm">
-            <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">+ Ajouter un Combattant</div>
-            <div class="combat-add-grid">
-              <input class="combat-add-input" id="caName" type="text" placeholder="Nom...">
-              <input class="combat-add-input" id="caInit" type="number" placeholder="Init." min="1" max="30" value="10">
-              <input class="combat-add-input" id="caPvMax" type="number" placeholder="PV max" min="1" value="20">
-              <div class="combat-add-type">
-                <div class="combat-type-opt sel-joueur" id="caTypeJoueur" onclick="caSelectType('joueur')">J</div>
-                <div class="combat-type-opt" id="caTypeEnnemi" onclick="caSelectType('ennemi')">E</div>
-                <div class="combat-type-opt" id="caTypeAllie" onclick="caSelectType('allie')">A</div>
+            <div style="font-size:0.6rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;">+ Ajouter un Combattant</div>
+
+            <!-- Ligne 1 : Nom + Lié à un joueur -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+              <div>
+                <div class="ca-label">Nom du combattant</div>
+                <input class="combat-add-input" id="caName" type="text" placeholder="Ex: Kai, Skulkin...">
               </div>
-              <button class="combat-add-confirm" onclick="combatAddFighter()">Ajouter</button>
+              <div>
+                <div class="ca-label">Joueur lié (optionnel)</div>
+                <select class="combat-add-input" id="caLinkedPlayer">
+                  <option value="">— Créé par le MJ —</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Ligne 2 : Type / Faction -->
+            <div style="margin-bottom:8px;">
+              <div class="ca-label">Type / Faction</div>
+              <div style="display:flex;gap:6px;">
+                <div class="combat-type-opt sel-joueur" id="caTypeJoueur" onclick="caSelectType('joueur')">🥷 Joueur</div>
+                <div class="combat-type-opt" id="caTypeEnnemi" onclick="caSelectType('ennemi')">💀 Ennemi</div>
+                <div class="combat-type-opt" id="caTypeAllie" onclick="caSelectType('allie')">🛡 Allié</div>
+                <div class="combat-type-opt" id="caTypeNeutre" onclick="caSelectType('neutre')">⚪ Neutre</div>
+              </div>
+            </div>
+
+            <!-- Ligne 3 : Initiative / Position / PV / Force -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:10px;">
+              <div>
+                <div class="ca-label">Initiative</div>
+                <input class="combat-add-input" id="caInit" type="number" placeholder="1–30" min="1" max="30" value="10">
+                <div class="ca-hint">Valeur de jet d'init</div>
+              </div>
+              <div>
+                <div class="ca-label">Position dans l'ordre</div>
+                <input class="combat-add-input" id="caPosition" type="number" placeholder="Auto" min="1">
+                <div class="ca-hint">Laisser vide = auto</div>
+              </div>
+              <div>
+                <div class="ca-label">PV au départ</div>
+                <input class="combat-add-input" id="caPvMax" type="number" placeholder="20" min="1" value="20">
+                <div class="ca-hint">Points de vie max</div>
+              </div>
+              <div>
+                <div class="ca-label">Force (FOR)</div>
+                <input class="combat-add-input" id="caForce" type="number" placeholder="10" min="1" max="30" value="10">
+                <div class="ca-hint">Modificateur +/−</div>
+              </div>
+            </div>
+
+            <!-- Ligne 4 : Stats secondaires -->
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;">
+              <div>
+                <div class="ca-label">DEX</div>
+                <input class="combat-add-input" id="caDex" type="number" value="10" min="1" max="30">
+              </div>
+              <div>
+                <div class="ca-label">CON</div>
+                <input class="combat-add-input" id="caCon" type="number" value="10" min="1" max="30">
+              </div>
+              <div>
+                <div class="ca-label">INT</div>
+                <input class="combat-add-input" id="caInt" type="number" value="10" min="1" max="30">
+              </div>
+              <div>
+                <div class="ca-label">SAG</div>
+                <input class="combat-add-input" id="caSag" type="number" value="10" min="1" max="30">
+              </div>
+            </div>
+
+            <!-- Notes MJ -->
+            <div style="margin-bottom:10px;">
+              <div class="ca-label">Notes MJ (invisibles aux joueurs)</div>
+              <input class="combat-add-input" id="caNotes" type="text" placeholder="Faiblesse, capacité spéciale, comportement...">
+            </div>
+
+            <div style="display:flex;gap:8px;">
+              <button class="combat-add-confirm" onclick="combatAddFighter()" style="flex:1;">⚔ Ajouter au Combat</button>
+              <button onclick="combatResetForm()" style="background:none;border:1px solid var(--border);color:var(--text-dim);font-family:Rajdhani,sans-serif;font-size:0.75rem;padding:6px 12px;cursor:pointer;border-radius:2px;">Réinitialiser</button>
             </div>
           </div>
         </div>
@@ -5891,6 +5981,8 @@
         <span class="session-online-role ${m.role==='mj'?'badge-mj':'badge-joueur'}">${m.role==='mj'?'MJ':'Joueur'}</span>
       </div>`
     ).join('');
+    // Mettre à jour la liste des joueurs dans le formulaire combat
+    combatFillLinkedPlayers(members);
   }
 
   async function sessionSendMsg() {
@@ -5985,7 +6077,7 @@
     etourdi:'st-etourdi', charme:'st-charme', terreur:'st-terreur',
     ralenti:'st-ralenti', mort:'st-mort'
   };
-  const TYPE_COLORS = { joueur:'#40b880', ennemi:'#e84040', allie:'#6ca0ff' };
+  const TYPE_COLORS = { joueur:'#40b880', ennemi:'#e84040', allie:'#6ca0ff', neutre:'#aaaaaa' };
 
   /* ── Brancher le listener combat quand on rejoint ── */
   function combatListenSession(code) {
@@ -6036,16 +6128,38 @@
     }
 
     container.innerHTML = _fighters.map((f, idx) => {
-      const isActive = _combatActive && idx === _currentTurnIdx;
-      const pct = Math.max(0, Math.round((f.pv / f.pvMax) * 100));
-      const pvColor = pct > 60 ? '#40e880' : pct > 30 ? '#e8c840' : '#e84040';
+      const isActive  = _combatActive && idx === _currentTurnIdx;
+      const pct       = Math.max(0, Math.round((f.pv / f.pvMax) * 100));
+      const pvColor   = pct > 60 ? '#40e880' : pct > 30 ? '#e8c840' : '#e84040';
       const typeColor = TYPE_COLORS[f.type] || '#888';
-      const isDead = f.statuts?.includes('mort');
+      const isDead    = f.statuts?.includes('mort');
+      const modFor    = f.modFor ?? (f.stats?.FOR ? Math.floor((f.stats.FOR - 10) / 2) : 0);
+      const modForStr = modFor >= 0 ? '+' + modFor : String(modFor);
 
       const statutsHtml = (f.statuts||[]).map(s =>
-        `<span class="combat-statut-tag ${STATUT_CSS[s]||''}" title="Cliquer pour retirer"
-          ${isMJ ? `onclick="combatRemoveStatut(${idx},'${s}')"` : ''}>${STATUT_LABELS[s]||s}</span>`
+        `<span class="combat-statut-tag ${STATUT_CSS[s]||''}"
+          ${isMJ ? `onclick="combatRemoveStatut(${idx},'${s}')" title="Cliquer pour retirer"` : ''}
+        >${STATUT_LABELS[s]||s}</span>`
       ).join('');
+
+      // Stats résumées
+      const statsHtml = f.stats ? `
+        <div style="display:flex;gap:8px;margin-top:3px;flex-wrap:wrap;">
+          <span class="ca-stat-chip" title="Force">⚔ FOR ${f.stats.FOR} <span style="color:var(--gold-light)">(${modForStr})</span></span>
+          <span class="ca-stat-chip" title="Dextérité">🏃 DEX ${f.stats.DEX}</span>
+          <span class="ca-stat-chip" title="Constitution">🛡 CON ${f.stats.CON}</span>
+          <span class="ca-stat-chip" title="Intelligence">🧠 INT ${f.stats.INT}</span>
+          <span class="ca-stat-chip" title="Sagesse">👁 SAG ${f.stats.SAG}</span>
+        </div>` : '';
+
+      // Notes MJ (invisibles aux joueurs)
+      const notesHtml = isMJ && f.notes
+        ? `<div style="font-size:0.65rem;color:rgba(232,64,64,0.6);font-style:italic;margin-top:2px;">📋 ${f.notes}</div>`
+        : '';
+
+      // Joueur lié
+      const linkedHtml = f.linkedUid
+        ? `<span style="font-size:0.58rem;color:#40c8e8;margin-left:4px;">🔗 Joueur</span>` : '';
 
       const pvControls = isMJ ? `
         <div class="combat-pv-controls">
@@ -6054,18 +6168,23 @@
           <button class="combat-pv-btn heal" onclick="combatApplyDmg(${idx}, 1)"  title="Soin">+</button>
           <button class="combat-pv-btn" style="font-size:0.65rem;width:28px;"
             onclick="combatOpenStatut(${idx}, event)" title="Statuts">⚡</button>
-          <button class="combat-pv-btn red" style="color:rgba(232,64,64,0.5);border-color:rgba(232,64,64,0.2);width:22px;"
+          <button class="combat-pv-btn" style="color:rgba(232,64,64,0.5);border-color:rgba(232,64,64,0.2);width:22px;"
             onclick="combatRemoveFighter(${idx})" title="Retirer">✕</button>
         </div>` : '';
 
       return `<div class="combat-fighter ${isActive?'active-turn':''} ${isDead?'dead':''}">
         <div class="combat-fighter-init">${f.init}</div>
-        <div>
-          <div class="combat-fighter-name" style="${isActive?'color:var(--gold-light)':''}">${isActive?'▶ ':''}${f.name}</div>
-          <div class="combat-fighter-type" style="color:${typeColor}">${f.type}</div>
-          <div class="combat-statuts" style="margin-top:3px;">${statutsHtml}
+        <div style="min-width:0;">
+          <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;">
+            <div class="combat-fighter-name" style="${isActive?'color:var(--gold-light)':''}">${isActive?'▶ ':''}${f.name}</div>
+            <div class="combat-fighter-type" style="color:${typeColor}">${f.type}</div>
+            ${linkedHtml}
+          </div>
+          ${statsHtml}
+          <div class="combat-statuts" style="margin-top:4px;">${statutsHtml}
             ${isMJ&&!isDead?`<span class="combat-statut-tag" style="border:1px dashed var(--border);color:var(--text-dim);cursor:pointer;" onclick="combatOpenStatut(${idx},event)">+</span>`:''}
           </div>
+          ${notesHtml}
         </div>
         <div class="combat-pv-wrap">
           <div class="combat-pv-row">
@@ -6097,26 +6216,89 @@
   /* ── Type combattant ── */
   function caSelectType(type) {
     _caType = type;
-    ['joueur','ennemi','allie'].forEach(t => {
+    ['joueur','ennemi','allie','neutre'].forEach(t => {
       const el = document.getElementById('caType' + t.charAt(0).toUpperCase() + t.slice(1));
       if (el) el.className = 'combat-type-opt' + (t === type ? ' sel-'+t : '');
     });
+    // Si joueur sélectionné, montrer la liste des membres
+    const linked = document.getElementById('caLinkedPlayer');
+    if (linked) linked.style.opacity = type === 'joueur' ? '1' : '0.4';
+  }
+
+  /* ── Remplir la liste des joueurs liés depuis les membres ── */
+  function combatFillLinkedPlayers(members) {
+    const sel = document.getElementById('caLinkedPlayer');
+    if (!sel) return;
+    const current = sel.value;
+    sel.innerHTML = '<option value="">— Créé par le MJ —</option>';
+    members.filter(m => m.role !== 'mj').forEach(m => {
+      const opt = document.createElement('option');
+      opt.value = m.uid;
+      opt.textContent = m.name;
+      sel.appendChild(opt);
+    });
+    sel.value = current;
   }
 
   /* ── Ajouter un combattant ── */
   async function combatAddFighter() {
     if (!_sessionId || _sessionRole !== 'mj') return;
-    const name  = document.getElementById('caName').value.trim();
-    const init  = parseInt(document.getElementById('caInit').value) || 10;
-    const pvMax = parseInt(document.getElementById('caPvMax').value) || 20;
+    const name     = document.getElementById('caName').value.trim();
+    const init     = parseInt(document.getElementById('caInit').value)    || 10;
+    const pvMax    = parseInt(document.getElementById('caPvMax').value)   || 20;
+    const force    = parseInt(document.getElementById('caForce').value)   || 10;
+    const dex      = parseInt(document.getElementById('caDex').value)     || 10;
+    const con      = parseInt(document.getElementById('caCon').value)     || 10;
+    const intel    = parseInt(document.getElementById('caInt').value)     || 10;
+    const sag      = parseInt(document.getElementById('caSag').value)     || 10;
+    const notes    = document.getElementById('caNotes').value.trim();
+    const linked   = document.getElementById('caLinkedPlayer').value;
+    const posInput = parseInt(document.getElementById('caPosition').value);
+
     if (!name) { showToast('⚠ Entrez un nom'); return; }
 
-    const newFighter = { name, init, pvMax, pv: pvMax, type: _caType, statuts: [] };
-    const newList = [..._fighters, newFighter].sort((a,b) => b.init - a.init);
+    const modFor = Math.floor((force - 10) / 2);
+
+    const newFighter = {
+      name, init, pvMax, pv: pvMax, type: _caType,
+      stats: { FOR: force, DEX: dex, CON: con, INT: intel, SAG: sag },
+      modFor,  // modificateur de force affiché
+      notes,   // visible MJ seulement
+      linkedUid: linked || null,
+      statuts: []
+    };
+
+    // Insertion à la position choisie ou tri par initiative
+    let newList = [..._fighters, newFighter];
+    if (!isNaN(posInput) && posInput >= 1) {
+      // Position manuelle : retirer le nouveau et l'insérer à l'index voulu
+      newList = [..._fighters];
+      const clampedPos = Math.min(posInput - 1, newList.length);
+      newList.splice(clampedPos, 0, newFighter);
+    } else {
+      // Tri automatique par initiative décroissante
+      newList.sort((a, b) => b.init - a.init);
+    }
 
     await combatSave({ fighters: newList });
-    document.getElementById('caName').value = '';
-    showToast('⚔ ' + name + ' ajouté !');
+    combatResetForm();
+    showToast('⚔ ' + name + ' ajouté ! (FOR ' + force + ', ' + pvMax + ' PV)');
+  }
+
+  /* ── Reset formulaire ── */
+  function combatResetForm() {
+    document.getElementById('caName').value     = '';
+    document.getElementById('caInit').value     = '10';
+    document.getElementById('caPosition').value = '';
+    document.getElementById('caPvMax').value    = '20';
+    document.getElementById('caForce').value    = '10';
+    document.getElementById('caDex').value      = '10';
+    document.getElementById('caCon').value      = '10';
+    document.getElementById('caInt').value      = '10';
+    document.getElementById('caSag').value      = '10';
+    document.getElementById('caNotes').value    = '';
+    document.getElementById('caLinkedPlayer').value = '';
+    caSelectType('joueur');
   }
 
   /* ── Lancer le combat ── */
