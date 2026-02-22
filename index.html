@@ -2509,6 +2509,55 @@
 
   .combat-type-opt.sel-neutre { border-color: #aaa; color: #ccc; background: rgba(200,200,200,0.08); }
 
+  /* ── CHUCHOTEMENTS ── */
+  .chat-msg.whisper-msg {
+    border-left-color: #c040e8;
+    background: rgba(192,64,232,0.06);
+  }
+
+  .whisper-target-bar {
+    padding: 5px 12px;
+    border-top: 1px solid var(--border);
+    background: rgba(192,64,232,0.07);
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.68rem;
+  }
+
+  .whisper-target-bar.hidden { display: none; }
+
+  .whisper-label {
+    color: #c040e8; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; font-size: 0.6rem; white-space: nowrap;
+  }
+
+  .whisper-select {
+    background: rgba(192,64,232,0.1); border: 1px solid rgba(192,64,232,0.3);
+    color: #d080f0; font-family: 'Rajdhani', sans-serif;
+    font-size: 0.78rem; font-weight: 600; padding: 3px 7px;
+    border-radius: 2px; outline: none; cursor: pointer; flex: 1;
+    transition: border-color 0.15s;
+  }
+  .whisper-select:focus { border-color: #c040e8; }
+
+  .whisper-cancel-btn {
+    background: none; border: none; color: rgba(192,64,232,0.5);
+    cursor: pointer; font-size: 0.8rem; padding: 2px 5px;
+    transition: color 0.15s; line-height: 1;
+  }
+  .whisper-cancel-btn:hover { color: #c040e8; }
+
+  .chat-whisper-toggle {
+    background: none; border: 1px solid var(--border);
+    color: var(--text-dim); font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem; font-weight: 700; padding: 6px 9px;
+    cursor: pointer; border-radius: 2px; transition: all 0.15s;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .chat-whisper-toggle:hover, .chat-whisper-toggle.active {
+    border-color: #c040e8; color: #d080f0;
+    background: rgba(192,64,232,0.08);
+  }
+
   /* Statuts picker popup */
   .statut-picker {
     position: fixed; z-index: 900;
@@ -2686,7 +2735,14 @@
           <div class="session-chat-msgs" id="sessionChatMsgs">
             <div style="text-align:center;padding:24px;font-size:0.78rem;color:var(--text-dim);font-style:italic;">Les messages apparaîtront ici...</div>
           </div>
+          <!-- Barre chuchotement (visible si mode whisper actif) -->
+          <div class="whisper-target-bar hidden" id="whisperBar">
+            <span class="whisper-label">🤫 Chuchoter à :</span>
+            <select class="whisper-select" id="whisperTarget"></select>
+            <button class="whisper-cancel-btn" onclick="whisperCancel()" title="Annuler">✕</button>
+          </div>
           <div class="session-chat-input-row">
+            <button class="chat-whisper-toggle" id="whisperToggleBtn" onclick="whisperToggle()" title="Message privé">🤫</button>
             <input class="session-chat-input" id="sessionChatInput" type="text" placeholder="Écrivez un message..." onkeydown="if(event.key==='Enter')sessionSendMsg()">
             <button class="session-send-btn" onclick="sessionSendMsg()">Envoyer →</button>
           </div>
@@ -4462,121 +4518,91 @@
       id: 'ninjago-city',
       name: 'Ninjago City',
       type: 'cite',
-      color: '#c9a84c',
-      x: 52, y: 30,
+      color: '#222222',
+      x: 50, y: 27,
       typeLabel: '🏙 Cité Principale',
-      desc: 'La grande métropole au cœur du monde de Ninjago. Centre du pouvoir, du commerce et de la technologie. Défendue par les Ninja, elle a survécu à d\'innombrables attaques et menaces.',
-      tags: ['Capital', 'Commerce', 'Technologie', 'Humains']
+      desc: 'La grande métropole au cœur du Royaume de Ninjago. Centre du pouvoir des Ninja et de la civilisation connue. Elle a survécu à d\'innombrables menaces grâce à ses défenseurs légendaires.',
+      tags: ['Royaume de Ninjago', 'Capital', 'Commerce', 'Technologie']
     },
     {
-      id: 'monastere',
-      name: 'Monastère des Maîtres',
+      id: 'imperium',
+      name: 'Impérium',
+      type: 'danger',
+      color: '#e84040',
+      x: 51, y: 13,
+      typeLabel: '🏯 Cité Impériale',
+      desc: 'Capitale du puissant Royaume d\'Impérium, cité fortifiée régie par une autorité militaire stricte. Ses murailles massives et ses armées disciplinées en font une place imprenable.',
+      tags: ['Royaume d\'Impérium', 'Militaire', 'Forteresse', 'Pouvoir']
+    },
+    {
+      id: 'monastere-spinjitzu',
+      name: 'Monastère du Spinjitzu',
       type: 'temple',
-      color: '#4080e8',
-      x: 51, y: 22,
+      color: '#b08060',
+      x: 20, y: 52,
       typeLabel: '🏯 Temple Sacré',
-      desc: 'Ancienne demeure du Maître Wu, perchée au sommet d\'une montagne. Lieu d\'entraînement des Ninja et gardien d\'anciens secrets. Détruit et reconstruit plusieurs fois au fil des ères.',
-      tags: ['Entraînement', 'Spinjitzu', 'Maître Wu', 'Sérénité']
+      desc: 'Sanctuaire ancestral du Royaume Disparu, berceau de l\'art du Spinjitzu. Ses murs renferment les secrets des anciens Maîtres. Un lieu de paix et de sagesse hors du temps.',
+      tags: ['Royaume Disparu', 'Spinjitzu', 'Maîtres', 'Sérénité']
     },
     {
-      id: 'forteresse-serpentine',
-      name: 'Forteresse Serpentine',
-      type: 'danger',
-      color: '#e84040',
-      x: 33, y: 58,
-      typeLabel: '⚔ Zone de Conflit',
-      desc: 'Ancien bastion des tribus Serpentine, perdu dans les marais de l\'ouest. Lieu maudit où les anciennes magies du serpent s\'entremêlent avec la pierre et la boue.',
-      tags: ['Serpentine', 'Danger', 'Venin', 'Ruines']
-    },
-    {
-      id: 'mine-cristal',
-      name: 'Mines de Cristal',
-      type: 'danger',
-      color: '#e84040',
-      x: 68, y: 72,
-      typeLabel: '⛏ Lieu Dangereux',
-      desc: 'Profondes mines où pousse le cristal d\'Imagination. Ressource rare utilisée pour les armes légendaires. Gardées par des créatures souterraines et des pièges anciens.',
-      tags: ['Ressources', 'Cristal', 'Profondeur', 'Risque élevé']
-    },
-    {
-      id: 'ile-darkness',
-      name: 'Île des Ténèbres',
+      id: 'administration-folie',
+      name: 'L\'Administration',
       type: 'mystique',
-      color: '#9040e8',
-      x: 78, y: 28,
-      typeLabel: '🌑 Lieu Mystique',
-      desc: 'Île isolée à l\'est, baignée d\'une brume perpétuelle. Portail vers les royaumes obscurs et point de convergence de l\'énergie des Ténèbres. Seuls les plus courageux osent y poser le pied.',
-      tags: ['Ténèbres', 'Portail', 'Oni', 'Mystère']
+      color: '#e84080',
+      x: 8, y: 18,
+      typeLabel: '🌀 Centre Administratif',
+      desc: 'Siège étrange et labyrinthique du Royaume de la Folie. Ses règles absurdes et son organisation chaotique en font un lieu incompréhensible pour les étrangers.',
+      tags: ['Royaume de la Folie', 'Administration', 'Chaos', 'Mystère']
     },
     {
-      id: 'foret-echo',
-      name: 'Forêt de l\'Écho',
+      id: 'jonction',
+      name: 'La Jonction',
       type: 'nature',
-      color: '#40b880',
-      x: 23, y: 40,
-      typeLabel: '🌿 Zone Naturelle',
-      desc: 'Forêt ancienne et dense où chaque bruit est répercuté à l\'infini. Sanctuaire naturel habité par des esprits végétaux et des créatures magiques. Les Maîtres de la Nature viennent s\'y ressourcer.',
-      tags: ['Nature', 'Esprits', 'Mystère', 'Ressourcement']
+      color: '#e87840',
+      x: 49, y: 38,
+      typeLabel: '⚖ Carrefour des Royaumes',
+      desc: 'Point de convergence unique appartenant à tous les royaumes à la fois. Territoire neutre où se croisent marchands, diplomates et aventuriers de chaque coin du monde connu.',
+      tags: ['Tous Royaumes', 'Neutre', 'Commerce', 'Diplomatie']
     },
     {
-      id: 'ile-samurai',
-      name: 'Île du Samouraï',
-      type: 'cite',
-      color: '#c9a84c',
-      x: 17, y: 62,
-      typeLabel: '🏝 Village Isolé',
-      desc: 'Île lointaine peuplée de guerriers Samouraï. Société fermée régie par un code d\'honneur strict. Les visiteurs sont rares et doivent prouver leur valeur en combat rituel.',
-      tags: ['Samouraï', 'Honneur', 'Combat', 'Isolement']
-    },
-    {
-      id: 'citadelle-ombre',
-      name: 'Citadelle de l\'Ombre',
-      type: 'mystique',
-      color: '#9040e8',
-      x: 43, y: 52,
-      typeLabel: '🌑 Forteresse Obscure',
-      desc: 'Forteresse souterraine ancrée dans un carrefour entre le monde physique et le Sous-Monde. Ancienne demeure du Maître Fantôme, aujourd\'hui abandonnée mais toujours hantée.',
-      tags: ['Ombre', 'Fantômes', 'Sous-Monde', 'Interdit']
-    },
-    {
-      id: 'tech-hub',
-      name: 'Complexe Digital',
-      type: 'tech',
-      color: '#40c8e8',
-      x: 63, y: 44,
-      typeLabel: '🤖 Centre Technologique',
-      desc: 'Hub technologique du Dr. Julien, berceau des Nindroïdes et de l\'intelligence artificielle de Ninjago. Laboratoires secrets, androïdes et systèmes de défense automatisés en protègent les accès.',
-      tags: ['Nindroïde', 'IA', 'Technologie', 'Dr. Julien']
-    },
-    {
-      id: 'village-nord',
-      name: 'Village du Grand Pic',
-      type: 'cite',
-      color: '#c9a84c',
-      x: 25, y: 18,
-      typeLabel: '🏘 Village de Montagne',
-      desc: 'Communauté de montagnards vivant dans le Grand Pic du Nord. Peuple robuste et indépendant, expert en survie et en escalade. Commerce de fourrures et de minerais précieux.',
-      tags: ['Montagne', 'Commerce', 'Mineurs', 'Froid']
-    },
-    {
-      id: 'temple-feu',
-      name: 'Temple du Feu Éternel',
-      type: 'temple',
+      id: 'pic-des-ames',
+      name: 'Pic des Âmes',
+      type: 'danger',
       color: '#4080e8',
-      x: 46, y: 60,
-      typeLabel: '🔥 Temple Élémentaire',
-      desc: 'Temple consacré à l\'élément du Feu, gardé par les descendants des anciens Maîtres de Flamme. Une flamme éternelle brûle en son centre depuis la nuit des temps. Source de puissance élémentaire.',
-      tags: ['Feu', 'Élément', 'Rituel', 'Gardiens']
+      x: 30, y: 49,
+      typeLabel: '💀 Lieu Maudit',
+      desc: 'Sommet glacial du Royaume Maudit où errent les âmes perdues. Les cris du vent sont en réalité les lamentations des esprits condamnés à hanter ces crêtes pour l\'éternité.',
+      tags: ['Royaume Maudit', 'Âmes', 'Malédiction', 'Interdit']
     },
     {
-      id: 'port-de-jade',
-      name: 'Port de Jade',
-      type: 'cite',
+      id: 'citadelle-maudite',
+      name: 'Citadelle Maudite',
+      type: 'mystique',
+      color: '#40b880',
+      x: 62, y: 67,
+      typeLabel: '🌑 Forteresse des Ténèbres',
+      desc: 'Bastion principal du Royaume des Ténèbres. Ses pierres noires absorbent la lumière et ses couloirs cachent des horreurs indicibles. Seuls les plus puissants maîtres des ténèbres y résident.',
+      tags: ['Royaume des Ténèbres', 'Malédiction', 'Ombre', 'Puissance']
+    },
+    {
+      id: 'forge-destin',
+      name: 'Forge du Destin',
+      type: 'tech',
+      color: '#e8c840',
+      x: 79, y: 26,
+      typeLabel: '🔥 Forge Légendaire',
+      desc: 'Forge mythique nichée au cœur des Terres de Lave, dans les Royaumes Volcaniques. Les armes forgées ici par la chaleur des volcans éternels sont imprégnées d\'une puissance élémentaire unique.',
+      tags: ['Royaumes Volcaniques', 'Forge', 'Armes', 'Feu']
+    },
+    {
+      id: 'temples-spin-destructeur',
+      name: 'Temples du Spin-Destructeur',
+      type: 'temple',
       color: '#c9a84c',
-      x: 74, y: 82,
-      typeLabel: '⚓ Port Marchand',
-      desc: 'Grand port animé au sud-est, carrefour du commerce maritime de Ninjago. Toutes les races y cohabitent dans une neutralité fragile. Marché noir prospère dans les bas-fonds portuaires.',
-      tags: ['Commerce', 'Port', 'Contrebande', 'Neutre']
+      x: 6, y: 76,
+      typeLabel: '🔺 Temples Anciens',
+      desc: 'Pyramides mystérieuses d\'un royaume dont le nom est perdu dans les âges. Ces temples abritent les secrets du Spin-Destructeur, un art oublié dont la puissance dépasse l\'entendement.',
+      tags: ['Royaume Inconnu', 'Spin-Destructeur', 'Ancien', 'Mystère']
     },
   ];
 
@@ -5920,9 +5946,15 @@
     const myUid = window._currentUser?.uid;
     const wasAtBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 60;
     document.getElementById('sessionMsgCount').textContent =
-      msgs.filter(m => m.type==='chat'||m.type==='roll').length + ' messages';
+      msgs.filter(m => m.type==='chat'||m.type==='roll'||m.type==='whisper').length + ' messages';
 
-    container.innerHTML = msgs.map(msg => {
+    // Filtrer les whispers : visible uniquement si on est concerné (auteur ou destinataire) ou MJ
+    const visible = msgs.filter(msg => {
+      if (msg.type !== 'whisper') return true;
+      return msg.authorUid === myUid || msg.targetUid === myUid || _sessionRole === 'mj';
+    });
+
+    container.innerHTML = visible.map(msg => {
       const ts = msg.ts?.toDate
         ? msg.ts.toDate().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})
         : '';
@@ -5936,6 +5968,19 @@
           <div class="chat-msg-text" style="color:#e84040;font-weight:600;">${msg.text}</div>
         </div>`;
       }
+
+      if (msg.type === 'whisper') {
+        const isMine = msg.authorUid === myUid;
+        return `<div class="chat-msg whisper-msg">
+          <div class="chat-msg-header">
+            <span class="chat-msg-author" style="color:#d080f0;">🤫 ${msg.author||'?'}</span>
+            <span class="chat-msg-badge" style="background:rgba(192,64,232,0.2);color:#d080f0;border:1px solid rgba(192,64,232,0.3);">→ ${msg.targetName||'?'}</span>
+            <span class="chat-msg-time">${ts}</span>
+          </div>
+          <div class="chat-msg-text" style="color:#d080f0;font-style:italic;">${msg.text}</div>
+        </div>`;
+      }
+
       if (msg.type === 'roll') {
         if (msg.hidden && msg.authorUid !== myUid && _sessionRole !== 'mj') {
           return `<div class="chat-msg roll-msg">
@@ -5967,7 +6012,7 @@
       </div>`;
     }).join('');
 
-    if (wasAtBottom || msgs.length <= 3) container.scrollTop = container.scrollHeight;
+    if (wasAtBottom || visible.length <= 3) container.scrollTop = container.scrollHeight;
   }
 
   function renderMembers(members) {
@@ -5983,23 +6028,74 @@
     ).join('');
     // Mettre à jour la liste des joueurs dans le formulaire combat
     combatFillLinkedPlayers(members);
+    // Mettre à jour les destinataires whisper
+    whisperFillTargets(members);
+  }
+
+  /* ── Whisper state ── */
+  let _whisperMode   = false;
+  let _whisperMembers = []; // { uid, name } des membres connectés
+
+  function whisperToggle() {
+    _whisperMode = !_whisperMode;
+    const bar = document.getElementById('whisperBar');
+    const btn = document.getElementById('whisperToggleBtn');
+    const inp = document.getElementById('sessionChatInput');
+    bar.classList.toggle('hidden', !_whisperMode);
+    btn.classList.toggle('active', _whisperMode);
+    inp.placeholder = _whisperMode ? '🤫 Message privé...' : 'Écrivez un message...';
+    if (_whisperMode) document.getElementById('whisperTarget').focus();
+  }
+
+  function whisperCancel() {
+    _whisperMode = false;
+    document.getElementById('whisperBar').classList.add('hidden');
+    document.getElementById('whisperToggleBtn').classList.remove('active');
+    document.getElementById('sessionChatInput').placeholder = 'Écrivez un message...';
+  }
+
+  function whisperFillTargets(members) {
+    _whisperMembers = members.filter(m => m.uid !== window._currentUser?.uid);
+    const sel = document.getElementById('whisperTarget');
+    if (!sel) return;
+    const cur = sel.value;
+    sel.innerHTML = _whisperMembers.map(m =>
+      `<option value="${m.uid}" data-name="${m.name}">${m.name} (${m.role === 'mj' ? 'MJ' : 'Joueur'})</option>`
+    ).join('') || '<option value="">Aucun membre</option>';
+    if (cur) sel.value = cur;
   }
 
   async function sessionSendMsg() {
     const input = document.getElementById('sessionChatInput');
     const text  = input.value.trim();
     if (!text || !_sessionId) return;
+
     const { collection, addDoc, serverTimestamp, doc, getDoc } = window._fbFns;
-    const user = window._currentUser;
+    const user     = window._currentUser;
     const profSnap = await getDoc(doc(window._fbDb, 'users', user.uid));
-    const prof = profSnap.exists() ? profSnap.data() : {};
-    await addDoc(collection(window._fbDb,'sessions',_sessionId,'chat'), {
-      type:'chat', text,
-      author: prof.name||user.displayName||'Ninja',
-      authorUid: user.uid,
-      authorRole: prof.role||'joueur',
-      ts: serverTimestamp()
-    });
+    const prof     = profSnap.exists() ? profSnap.data() : {};
+    const author   = prof.name || user.displayName || 'Ninja';
+    const role     = prof.role || 'joueur';
+
+    if (_whisperMode) {
+      const sel        = document.getElementById('whisperTarget');
+      const targetUid  = sel?.value;
+      const targetName = sel?.options[sel.selectedIndex]?.dataset?.name || '?';
+      if (!targetUid) { showToast('⚠ Choisissez un destinataire'); return; }
+
+      await addDoc(collection(window._fbDb,'sessions',_sessionId,'chat'), {
+        type: 'whisper', text,
+        author, authorUid: user.uid, authorRole: role,
+        targetUid, targetName,
+        ts: serverTimestamp()
+      });
+    } else {
+      await addDoc(collection(window._fbDb,'sessions',_sessionId,'chat'), {
+        type: 'chat', text,
+        author, authorUid: user.uid, authorRole: role,
+        ts: serverTimestamp()
+      });
+    }
     input.value = '';
   }
 
